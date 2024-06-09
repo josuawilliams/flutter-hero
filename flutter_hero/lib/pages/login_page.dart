@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hero/components/button.dart';
 import 'package:flutter_hero/components/input_field.dart';
+import 'package:flutter_hero/pages/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -60,6 +61,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 ButtonWidget(
                   onTap: signInUser,
+                  TextButton: "Sign In",
                 ),
                 const SizedBox(
                   height: 15,
@@ -73,7 +75,10 @@ class LoginPage extends StatelessWidget {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              print("okee");
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterPage()));
                             },
                           text: "Sign up",
                           style: const TextStyle(
