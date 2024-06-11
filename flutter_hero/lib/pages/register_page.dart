@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:quickalert/quickalert.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -27,7 +27,6 @@ class _RegisterPageState extends State<RegisterPage> {
       isLoading = true;
     });
 
-    // Call RegisterUser method
     final response = await controller.RegisterUser(
       email: emailController.text,
       name: nameController.text,

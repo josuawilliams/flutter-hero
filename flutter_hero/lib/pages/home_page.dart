@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hero/controller/bottom_nav_bar.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomePage extends StatelessWidget {
   var height, width;
   HomePage({super.key});
+
+  BottomNavigationBarController controllerBar =
+      Get.put(BottomNavigationBarController());
+
+  BottomNavigationBarTitle controllerTitle =
+      Get.put(BottomNavigationBarTitle());
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +21,25 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         bottomNavigationBar: Container(
           color: Colors.black,
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: GNav(
               gap: 6,
-              textStyle:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              textStyle: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
               backgroundColor: Colors.black,
               color: Colors.white,
+              tabBorderRadius: 20,
               activeColor: Colors.orangeAccent,
-              tabBackgroundColor: Color.fromARGB(255, 231, 231, 231),
-              padding:
-                  EdgeInsets.only(top: 10, bottom: 16, left: 40, right: 40),
-              tabs: [
+              tabBackgroundColor: const Color.fromARGB(255, 231, 231, 231),
+              padding: const EdgeInsets.only(
+                  top: 10, bottom: 16, left: 40, right: 40),
+              onTabChange: (value) {
+                controllerBar.index.value = value;
+                controllerTitle.index.value = value;
+                controllerBar.changePage(value);
+              },
+              tabs: const [
                 GButton(
                   icon: Icons.home,
                   text: "Home",
@@ -51,19 +65,14 @@ class HomePage extends StatelessWidget {
                 decoration: BoxDecoration(),
                 height: height * 0.08,
                 width: width,
-                child: const Column(
+                child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 15, left: 25),
+                      padding: const EdgeInsets.only(top: 15, left: 25),
                       child: Row(
                         children: [
-                          Text(
-                            "List Heroes",
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          )
+                          Obx(() => controllerTitle
+                              .pages[controllerTitle.index.value])
                         ],
                       ),
                     ),
@@ -71,14 +80,15 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Container(
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                height: height * 0.80,
-                width: width,
-              ),
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
+                  height: height * 0.80,
+                  width: width,
+                  child: Obx(
+                      () => controllerBar.pages[controllerBar.index.value])),
             ],
           ),
         )));

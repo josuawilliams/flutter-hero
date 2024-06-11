@@ -1,18 +1,57 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hero/components/allert.dart';
 import 'package:flutter_hero/components/button.dart';
 import 'package:flutter_hero/components/input_field.dart';
+import 'package:flutter_hero/controller/user_controller.dart';
+import 'package:flutter_hero/pages/home_page.dart';
 import 'package:flutter_hero/pages/register_page.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   // Editing Controller
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final controller = Get.put(UserController());
+  bool isLoading = false;
 
-  void signInUser() {
-    print("Loginnnnnnn");
+  void signInUser(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final response = await controller.LoginUser(
+        email: emailController.text, password: passwordController.text);
+
+    print(response.toString());
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    } else if (token == null) {
+      if (response.toString() == "Masukkan Email") {
+        showAlertError(context, response.toString());
+      } else if (response.toString() == "Masukkan Password") {
+        showAlertError(context, response.toString());
+      } else {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -59,10 +98,12 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 45,
                 ),
-                ButtonWidget(
-                  onTap: signInUser,
-                  TextButton: "Sign In",
-                ),
+                isLoading
+                    ? const CircularProgressIndicator()
+                    : ButtonWidget(
+                        onTap: () => signInUser(context),
+                        TextButton: 'Sign In',
+                      ),
                 const SizedBox(
                   height: 15,
                 ),
