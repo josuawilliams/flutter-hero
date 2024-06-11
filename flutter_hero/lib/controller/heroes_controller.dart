@@ -53,7 +53,6 @@ class FavoriteController extends GetxController
 }
 
 class AddFavoriteController extends GetxController {
-  void showAlert() {}
 
   Future<dynamic> AddFavoriteHeroes({
     required String id,
@@ -68,7 +67,6 @@ class AddFavoriteController extends GetxController {
 }
 
 class DeleteFavoriteController extends GetxController {
-  void showAlert() {}
 
   Future<dynamic> DeleteFavoriteHeroes({
     required String id,
@@ -81,3 +79,4 @@ class DeleteFavoriteController extends GetxController {
     }
   }
 }
+

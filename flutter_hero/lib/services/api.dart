@@ -124,4 +124,18 @@ class API {
       return e.response;
     }
   }
+
+  Future<Response?> EditUser(Map req) async {
+    try {
+      await dotenv.load();
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      final token = pref.getString('token');
+      final BaseURL = dotenv.get('FLUTTER_HTTP');
+      final response = await Dio().patch("$BaseURL/heroes/user-name",
+          data: req, options: Options(headers: {"token-header": token}));
+      return response;
+    } on DioException catch (e) {
+      return e.response;
+    }
+  }
 }

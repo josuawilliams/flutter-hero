@@ -6,8 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
-  void showAlert() {}
-
   Future<dynamic> RegisterUser({
     required String name,
     required String email,
@@ -16,6 +14,18 @@ class UserController extends GetxController {
     try {
       final req = {'name': name, 'email': email, 'password': password};
       final res = await API().RegisteredUser(req);
+      return res;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  Future<dynamic> UpdateUser({
+    required String name,
+  }) async {
+    try {
+      final req = {'name': name};
+      final res = await API().EditUser(req);
       return res;
     } catch (e) {
       return e;

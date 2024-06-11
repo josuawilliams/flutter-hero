@@ -5,6 +5,7 @@ import 'package:flutter_hero/components/button.dart';
 import 'package:flutter_hero/controller/heroes_controller.dart';
 import 'package:flutter_hero/models/favorite_res_model.dart';
 import 'package:flutter_hero/models/heroes_res_model.dart';
+import 'package:flutter_hero/pages/home_page.dart';
 import 'package:get/get.dart';
 
 class DetailHeroPage extends StatefulWidget {
@@ -28,7 +29,16 @@ class _DetailHeroPageState extends State<DetailHeroPage> {
     final response = await controller.AddFavoriteHeroes(id: id);
     if (response.toString().contains("Berhasil")) {
       // ignore: use_build_context_synchronously
-      showAlert(context, response.toString(), () => Navigator.pop(context));
+      showAlert(
+          context,
+          response.toString(),
+          () => {
+                Get.find<FavoriteController>().getFavoriteHeroes(),
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                )
+              });
     } else {
       showAlertError(context, response.toString());
     }
@@ -46,7 +56,16 @@ class _DetailHeroPageState extends State<DetailHeroPage> {
     final response = await controllerDelete.DeleteFavoriteHeroes(id: id);
     if (response.toString().contains("Berhasil")) {
       // ignore: use_build_context_synchronously
-      showAlert(context, response.toString(), () => Navigator.pop(context));
+      showAlert(
+          context,
+          response.toString(),
+          () => {
+                Get.find<FavoriteController>().getFavoriteHeroes(),
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                )
+              });
     } else {
       showAlertError(context, response.toString());
     }
